@@ -30,6 +30,9 @@ class Payment(models.Model):
     money = models.DecimalField(decimal_places=2, max_digits=52)
     date = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return self.client.name
+
 
 class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -48,9 +51,8 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    price = models.DecimalField(decimal_places=2, max_digits=52)
 
     @property
     def total(self):
-        return self.quantity * self.price
+        return self.quantity * self.product.selling_price
 

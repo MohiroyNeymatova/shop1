@@ -5,7 +5,7 @@ from .models import *
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        exclude = ['debt']
+        fields = "__all__"
 
 
 class ProductSerializer(serializers.ModelSerializer):

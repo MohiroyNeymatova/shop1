@@ -57,11 +57,14 @@ def create_order(request):
 
 @api_view(['POST'])
 def order_item_create(request):
-    order = request.data.get('order')
-    items = request.data.get('items')
-    for i in items:
-        product = Product.objects.get(id=i['product'])
-        OrderItem.objects.create(order_id=order, product=product, quantity=i['quantity'], price=product.selling_price)
+    order = request.POST['order']
+    product = request.POST['product']
+    quantity = request.POST['quantity']
+    order_item = OrderItem.objects.create(order_id=order, product_id=product, quantity=quantity)
+    client = order.client
+    debt = client.debt
+    debt += order_item.total
+    client.save()
     return Response({"success": True})
 
 
